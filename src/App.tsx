@@ -33,6 +33,7 @@ type NavKey = 'forge' | 'assets' | 'proof';
 
 const defaultBrief = '制作一个深海救援游戏：小鲨鱼穿过声呐区，收集能源泡泡，并避开废弃机械。';
 const stageNames = ['解析创意', '构建规则', '绘制资产', '生成世界', '编写玩法', '质量验证'];
+const sharkAssetUrl = './veyra-shark.webp';
 
 const initialEvents = [
   { time: '00:00.12', title: '工作区已隔离', detail: 'reef-runner / local sandbox', tone: 'cyan' },
@@ -41,17 +42,7 @@ const initialEvents = [
 ];
 
 function SharkMark({ compact = false }: { compact?: boolean }) {
-  return (
-    <svg className={compact ? 'shark-mark compact' : 'shark-mark'} viewBox="0 0 92 60" role="img" aria-label="Veyra 小鲨鱼标志">
-      <path className="fin-back" d="M39 20 49 3l7 21Z" />
-      <path className="tail" d="m71 25 17-13-3 17 7 14-20-7Z" />
-      <path className="body" d="M6 33C18 14 47 12 73 25l2 11C54 54 21 50 6 36l-4-2Z" />
-      <path className="belly" d="M17 39c17 9 39 7 56-3C55 51 30 55 17 39Z" />
-      <circle className="eye" cx="58" cy="26" r="2.5" />
-      <path className="gill" d="M53 34c5 3 11 3 16-1" />
-      <path className="fin" d="m43 42-2 13 14-11Z" />
-    </svg>
-  );
+  return <img className={compact ? 'shark-mark compact' : 'shark-mark'} src={sharkAssetUrl} alt="Veyra 戴护目镜的小鲨鱼形象" />;
 }
 
 function SonarGame() {
@@ -125,25 +116,15 @@ function SonarGame() {
     observer.observe(wrap);
     resize();
 
+    const sharkSprite = new Image();
+    sharkSprite.src = sharkAssetUrl;
     const drawShark = (x: number, y: number) => {
       ctx.save();
-      ctx.translate(x, y);
       ctx.shadowBlur = 18;
       ctx.shadowColor = '#35dce7';
-      ctx.fillStyle = '#62ebef';
-      ctx.beginPath();
-      ctx.moveTo(-35, 0);
-      ctx.bezierCurveTo(-13, -22, 23, -20, 37, -3);
-      ctx.bezierCurveTo(22, 18, -15, 19, -35, 3);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = '#239ca9';
-      ctx.beginPath();
-      ctx.moveTo(32, -2); ctx.lineTo(51, -18); ctx.lineTo(47, 1); ctx.lineTo(53, 18); ctx.lineTo(31, 7); ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(-2, -16); ctx.lineTo(7, -33); ctx.lineTo(14, -13); ctx.fill();
-      ctx.fillStyle = '#061319';
-      ctx.beginPath(); ctx.arc(23, -5, 2.5, 0, Math.PI * 2); ctx.fill();
+      if (sharkSprite.complete && sharkSprite.naturalWidth > 0) {
+        ctx.drawImage(sharkSprite, x - 35, y - 47, 70, 91);
+      }
       ctx.restore();
     };
 
@@ -239,14 +220,14 @@ function SonarGame() {
 
 function AssetView() {
   const assets = [
-    { name: '小鲨鱼 / 游动帧', type: 'SVG 序列', icon: Waves, meta: '原创矢量 · 4 帧' },
+    { name: '护目镜小鲨鱼', type: '角色主资产', icon: Waves, meta: '用户提供形象 · 透明背景优化' },
     { name: '深海声呐网格', type: '程序化背景', icon: Radar, meta: 'Canvas · 0 KB' },
     { name: '能源泡泡', type: '粒子组件', icon: Sparkles, meta: '实时渲染 · 可复用' },
     { name: '收集反馈音', type: '音频节点', icon: Volume2, meta: 'Web Audio · 待接入' },
   ];
   return (
     <section className="view-stack" aria-labelledby="assets-heading">
-      <header className="view-header"><div><span className="eyebrow">ASSET BAY / 04</span><h1 id="assets-heading">资产舱</h1><p>所有视觉均为本项目原创矢量或程序化绘制，不依赖外部素材。</p></div><span className="big-index">04</span></header>
+      <header className="view-header"><div><span className="eyebrow">ASSET BAY / 04</span><h1 id="assets-heading">资产舱</h1><p>角色统一采用用户提供的护目镜小鲨鱼；场景与粒子由程序化方式绘制。</p></div><span className="big-index">04</span></header>
       <div className="asset-grid">
         {assets.map(({ name, type, icon: Icon, meta }, index) => (
           <article className="asset-card" key={name}>
@@ -261,7 +242,7 @@ function AssetView() {
 
 function ProofView() {
   const checks = [
-    ['来源可追溯', '所有图形与交互均在当前仓库中独立实现'],
+    ['来源可追溯', '角色形象由用户提供，其余场景与交互在当前仓库实现'],
     ['响应式门禁', '桌面、平板与 390px 布局均纳入验收'],
     ['可访问输入', '键盘、触控按钮与可见焦点并存'],
     ['构建产物', 'Vite 生成静态站点，可部署至 GitHub Pages'],
@@ -322,7 +303,7 @@ export default function App() {
   };
 
   const exportReport = () => {
-    const report = `SHARKFORGE / BUILD REPORT\n\n创意：${brief}\n状态：${stages.every((stage) => stage === 'done') ? '验证通过' : '演示草稿'}\n资产：原创程序化图形\n导出时间：${new Date().toLocaleString('zh-CN')}\n`;
+    const report = `VEYRA / BUILD REPORT\n\n创意：${brief}\n状态：${stages.every((stage) => stage === 'done') ? '验证通过' : '演示草稿'}\n角色：用户提供的护目镜小鲨鱼\n场景：程序化图形\n导出时间：${new Date().toLocaleString('zh-CN')}\n`;
     const url = URL.createObjectURL(new Blob([report], { type: 'text/plain;charset=utf-8' }));
     const link = document.createElement('a'); link.href = url; link.download = 'veyra-build-report.txt'; link.click(); URL.revokeObjectURL(url);
   };

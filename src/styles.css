@@ -78,17 +78,12 @@
     z-index: 40;
   }
   .brand { align-items: center; background: none; display: flex; gap: 10px; min-height: 48px; padding: 0; text-align: left; }
-  .brand .shark-mark { height: 37px; width: 56px; }
+  .brand .shark-mark { height: 48px; width: 48px; }
   .brand span { display: flex; flex-direction: column; }
   .brand strong { font-size: 15px; letter-spacing: .08em; }
   .brand small { color: var(--muted); font: 9px var(--mono); letter-spacing: .06em; }
-  .shark-mark { display: block; height: auto; overflow: visible; width: 100%; }
-  .shark-mark .body { fill: var(--cyan); }
-  .shark-mark .belly { fill: #8debf0; }
-  .shark-mark .fin-back, .shark-mark .tail, .shark-mark .fin { fill: var(--cyan-soft); }
-  .shark-mark .eye { fill: var(--bg); }
-  .shark-mark .gill { fill: none; stroke: var(--bg); stroke-linecap: round; stroke-width: 1.8; }
-  .shark-mark.compact { width: 64px; }
+  .shark-mark { display: block; height: auto; object-fit: contain; object-position: center; width: 100%; }
+  .shark-mark.compact { width: 52px; }
   .top-status { align-items: center; color: var(--muted-strong); display: flex; font: 10px var(--mono); gap: 22px; letter-spacing: .08em; }
   .top-status span { align-items: center; display: flex; gap: 7px; }
   .status-dot { background: var(--success); border-radius: 50%; box-shadow: 0 0 9px var(--success); display: inline-block; height: 6px; width: 6px; }
@@ -122,7 +117,7 @@
   .nav-item.active { background: linear-gradient(90deg, rgba(53, 189, 199, .16), transparent); border-color: var(--cyan); color: var(--cyan); }
   .mission-card { background: var(--surface); border: 1px solid var(--line); margin-top: 28px; overflow: hidden; padding: 14px; position: relative; }
   .mission-card::before { background: var(--amber); content: ""; height: 1px; position: absolute; right: -5px; top: 8px; transform: rotate(-45deg); width: 24px; }
-  .mission-card .shark-mark { margin: 12px auto 7px; max-width: 125px; filter: drop-shadow(0 0 14px rgba(58, 210, 220, .25)); }
+  .mission-card .shark-mark { filter: drop-shadow(0 0 16px rgba(58, 210, 220, .3)); height: 145px; margin: 4px auto 2px; max-width: 150px; object-fit: contain; }
   .mission-card > strong, .mission-card > small { display: block; }
   .mission-card > strong { font-size: 12px; letter-spacing: .08em; }
   .mission-card > small { color: var(--muted); font-size: 10px; margin-top: 3px; }
@@ -229,9 +224,9 @@
   .asset-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .asset-card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: minmax(150px, .7fr) 1fr; min-height: 210px; }
   .asset-visual { align-items: center; background: #071217; border-right: 1px solid var(--line); display: flex; justify-content: center; overflow: hidden; position: relative; }
-  .asset-visual > svg:not(.shark-mark) { color: rgba(79, 215, 225, .4); height: 67px; stroke-width: 1; width: 67px; }
+  .asset-visual > svg { color: rgba(79, 215, 225, .4); height: 67px; stroke-width: 1; width: 67px; }
   .asset-visual > span { color: rgba(240, 164, 54, .55); font: 9px var(--mono); left: 10px; position: absolute; top: 9px; }
-  .asset-visual .shark-mark { filter: drop-shadow(0 0 12px rgba(69, 215, 225, .28)); position: absolute; width: 118px; }
+  .asset-visual .shark-mark { filter: drop-shadow(0 0 14px rgba(69, 215, 225, .3)); height: 170px; position: absolute; width: 140px; }
   .asset-copy { align-self: center; padding: 25px; }
   .asset-copy h2 { font-size: 17px; margin: 8px 0; }
   .asset-copy p { color: var(--muted); font-size: 11px; margin: 0; }
@@ -294,7 +289,7 @@
     :root { --topbar: 58px; }
     .hide-mobile, .top-status { display: none !important; }
     .brand strong { font-size: 13px; }
-    .brand .shark-mark { width: 49px; }
+    .brand .shark-mark { height: 44px; width: 44px; }
     .workbench, .view-stack { padding: 10px; }
     .command-hero { min-height: auto; padding: 21px 16px 16px; }
     .hero-copy h1, .view-header h1 { font-size: 29px; }
