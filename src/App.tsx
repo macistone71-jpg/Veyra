@@ -49,6 +49,7 @@ function SonarGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const pressed = useRef(new Set<string>());
+  const bounds = useRef({ width: 380, height: 250 });
   const state = useRef({ x: 190, y: 130, score: 0, energy: 78, running: true, last: 0 });
   const bubbles = useRef([
     { x: 0.18, y: 0.3, r: 7, live: true },
@@ -59,6 +60,25 @@ function SonarGame() {
   const [running, setRunning] = useState(true);
   const [score, setScore] = useState(0);
   const [energy, setEnergy] = useState(78);
+
+  const moveBy = useCallback((dx: number, dy: number) => {
+    const s = state.current;
+    if (!s.running) return;
+    s.x = Math.max(38, Math.min(bounds.current.width - 52, s.x + dx));
+    s.y = Math.max(38, Math.min(bounds.current.height - 38, s.y + dy));
+    bubbles.current.forEach((bubble) => {
+      if (!bubble.live) return;
+      const bx = bubble.x * bounds.current.width;
+      const by = bubble.y * bounds.current.height;
+      if (Math.hypot(s.x - bx, s.y - by) < 42) {
+        bubble.live = false;
+        s.score += 25;
+        s.energy = Math.min(100, s.energy + 5);
+        setScore(s.score);
+        setEnergy(s.energy);
+      }
+    });
+  }, []);
 
   const reset = useCallback(() => {
     state.current = { x: 190, y: 130, score: 0, energy: 78, running: true, last: 0 };
@@ -78,7 +98,14 @@ function SonarGame() {
       if (['INPUT', 'TEXTAREA'].includes(target.tagName)) return;
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(event.key)) {
         event.preventDefault();
-        pressed.current.add(event.key.toLowerCase());
+        const key = event.key.toLowerCase();
+        if (!event.repeat) {
+          if (key === 'arrowleft' || key === 'a') moveBy(-14, 0);
+          if (key === 'arrowright' || key === 'd') moveBy(14, 0);
+          if (key === 'arrowup' || key === 'w') moveBy(0, -14);
+          if (key === 'arrowdown' || key === 's') moveBy(0, 14);
+        }
+        pressed.current.add(key);
       }
     };
     const up = (event: KeyboardEvent) => pressed.current.delete(event.key.toLowerCase());
@@ -88,7 +115,7 @@ function SonarGame() {
       window.removeEventListener('keydown', down);
       window.removeEventListener('keyup', up);
     };
-  }, []);
+  }, [moveBy]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -104,6 +131,7 @@ function SonarGame() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = Math.max(280, rect.width);
       height = Math.max(250, rect.height);
+      bounds.current = { width, height };
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
@@ -141,7 +169,6 @@ function SonarGame() {
         s.x = Math.max(38, Math.min(width - 52, s.x));
         s.y = Math.max(38, Math.min(height - 38, s.y));
       }
-
       ctx.clearRect(0, 0, width, height);
       const bg = ctx.createLinearGradient(0, 0, width, height);
       bg.addColorStop(0, '#06151c'); bg.addColorStop(1, '#071016');
@@ -181,6 +208,10 @@ function SonarGame() {
   }, []);
 
   const nudge = (key: string) => {
+    if (key === 'arrowleft') moveBy(-22, 0);
+    if (key === 'arrowright') moveBy(22, 0);
+    if (key === 'arrowup') moveBy(0, -22);
+    if (key === 'arrowdown') moveBy(0, 22);
     pressed.current.add(key);
     window.setTimeout(() => pressed.current.delete(key), 180);
   };
@@ -206,7 +237,7 @@ function SonarGame() {
       </div>
       <div className="game-wrap" ref={wrapRef}>
         <canvas ref={canvasRef} tabIndex={0} role="img" aria-label="可玩的深海小鲨鱼游戏。使用方向键或 W A S D 移动并收集橙色能源泡泡。" />
-        <div className="game-caption">方向键 / W A S D 控制小鲨鱼</div>
+        <div className="game-caption">点击试玩舱后，用方向键 / W A S D 控制小鲨鱼</div>
         <div className="touch-pad" aria-label="触控方向键">
           <button onPointerDown={() => nudge('arrowup')} aria-label="向上">↑</button>
           <button onPointerDown={() => nudge('arrowleft')} aria-label="向左">←</button>
@@ -275,7 +306,7 @@ export default function App() {
     return () => window.removeEventListener('keydown', close);
   }, [helpOpen]);
 
-  const runBuild = () => {
+  const runBuild = useCallback(() => {
     if (!brief.trim()) {
       setMessage('请先写下游戏创意，再启动铸造流程。');
       document.getElementById('game-brief')?.focus();
@@ -300,7 +331,18 @@ export default function App() {
         window.clearInterval(timer); setBuilding(false); setMessage('铸造完成：试玩舱与证明报告已同步。');
       }
     }, 620);
-  };
+  }, [brief]);
+
+  useEffect(() => {
+    const launchFromKeyboard = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter' && !building) {
+        event.preventDefault();
+        runBuild();
+      }
+    };
+    window.addEventListener('keydown', launchFromKeyboard);
+    return () => window.removeEventListener('keydown', launchFromKeyboard);
+  }, [building, runBuild]);
 
   const exportReport = () => {
     const report = `VEYRA / BUILD REPORT\n\n创意：${brief}\n状态：${stages.every((stage) => stage === 'done') ? '验证通过' : '演示草稿'}\n角色：用户提供的护目镜小鲨鱼\n场景：程序化图形\n导出时间：${new Date().toLocaleString('zh-CN')}\n`;

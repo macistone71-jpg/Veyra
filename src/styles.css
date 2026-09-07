@@ -50,7 +50,7 @@
     overflow-x: hidden;
   }
   button { color: inherit; cursor: pointer; touch-action: manipulation; }
-  button:focus-visible, textarea:focus-visible, canvas:focus-visible, [tabindex]:focus-visible {
+  a:focus-visible, button:focus-visible, textarea:focus-visible, canvas:focus-visible, [tabindex]:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 3px;
   }
@@ -89,9 +89,9 @@
   .status-dot { background: var(--success); border-radius: 50%; box-shadow: 0 0 9px var(--success); display: inline-block; height: 6px; width: 6px; }
   .top-actions { align-items: center; display: flex; gap: 8px; }
   .icon-button, .text-button {
-    align-items: center; background: transparent; border: 1px solid var(--line); display: inline-flex; justify-content: center; min-height: 40px; transition: background .18s ease, border-color .18s ease, color .18s ease;
+    align-items: center; background: transparent; border: 1px solid var(--line); display: inline-flex; justify-content: center; min-height: 44px; transition: background .18s ease, border-color .18s ease, color .18s ease;
   }
-  .icon-button { min-width: 40px; padding: 0; }
+  .icon-button { min-width: 44px; padding: 0; }
   .text-button { gap: 8px; padding: 0 13px; }
   .icon-button:hover, .text-button:hover { background: var(--surface-soft); border-color: var(--line-bright); color: var(--cyan); }
 
@@ -192,8 +192,8 @@
   .game-wrap { height: 326px; min-width: 0; overflow: hidden; position: relative; }
   .game-wrap canvas { display: block; }
   .game-caption { background: rgba(4, 11, 14, .72); border-left: 2px solid var(--amber); bottom: 10px; color: var(--muted-strong); font: 9px var(--mono); left: 10px; padding: 6px 9px; position: absolute; }
-  .touch-pad { bottom: 9px; display: none; gap: 3px; grid-template-columns: repeat(3, 40px); position: absolute; right: 9px; }
-  .touch-pad button { background: rgba(8, 25, 30, .88); border: 1px solid var(--line-bright); height: 40px; }
+  .touch-pad { bottom: 9px; display: none; gap: 4px; grid-template-columns: repeat(3, 44px); position: absolute; right: 9px; }
+  .touch-pad button { background: rgba(8, 25, 30, .88); border: 1px solid var(--line-bright); height: 44px; }
   .touch-pad button:first-child { grid-column: 2; }
   .touch-pad button:nth-child(2) { grid-column: 1; grid-row: 2; }
   .touch-pad button:nth-child(3) { grid-column: 2; grid-row: 2; }
@@ -244,7 +244,7 @@
 
   .modal-backdrop { align-items: center; background: rgba(1, 5, 7, .82); display: flex; inset: 0; justify-content: center; padding: 18px; position: fixed; z-index: 100; }
   .help-modal { background: #0a171c; border: 1px solid var(--line-bright); box-shadow: 0 25px 80px rgba(0,0,0,.55); max-height: calc(100dvh - 36px); max-width: 520px; overflow-y: auto; padding: 28px; position: relative; width: 100%; }
-  .modal-close { align-items: center; background: transparent; border: 1px solid var(--line); display: flex; height: 40px; justify-content: center; position: absolute; right: 14px; top: 14px; width: 40px; }
+  .modal-close { align-items: center; background: transparent; border: 1px solid var(--line); display: flex; height: 44px; justify-content: center; position: absolute; right: 14px; top: 14px; width: 44px; }
   .help-modal h2 { font-size: 24px; margin: 8px 42px 18px 0; }
   .help-modal ol { list-style: none; margin: 0 0 21px; padding: 0; }
   .help-modal li { border-top: 1px solid var(--line); display: grid; gap: 15px; grid-template-columns: 30px 1fr; padding: 13px 0; }
