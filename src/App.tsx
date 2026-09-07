@@ -42,7 +42,7 @@ const initialEvents = [
 ];
 
 function SharkMark({ compact = false }: { compact?: boolean }) {
-  return <img className={compact ? 'shark-mark compact' : 'shark-mark'} src={sharkAssetUrl} alt="Veyra 戴护目镜的小鲨鱼形象" />;
+  return <img className={compact ? 'shark-mark compact' : 'shark-mark'} src={sharkAssetUrl} width="694" height="900" fetchPriority="high" decoding="async" alt="Veyra 戴护目镜的小鲨鱼形象" />;
 }
 
 function SonarGame() {
